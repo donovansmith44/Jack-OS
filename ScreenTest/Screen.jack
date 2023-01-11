@@ -28,7 +28,7 @@ class Screen {
 	   let i = i + 1;
 	}
 
-	let twoToThe[15] = -32767;
+	let twoToThe[15] = -32767-1; //cannot straight away set it to -32768, because the PC only supports 15 bits.
  
 	return;
     }
@@ -56,24 +56,14 @@ class Screen {
 	//set x%16 of value to current color.
 	if(~color) { //if color is set to white
 		if(twoToThe[xMod16] & value) { //if the x%16 pixel is currently black
-			let value = ~(value & twoToThe[xMod16]) & (value | twoToThe[xMod16]); //set it to white
-			} else {
-//			let value = ~(value | twoToThe[xMod16]);
-			}
+		   let value = value - twoToThe[xMod16]; //set it to white
 		}
-	 else { //if color is set to black
+	} else { //if color is set to black
 		if(~(twoToThe[xMod16] & value)) { //if the x%16 pixel is currently white
-
-			if(xMod16 < 15){ //for bits 0 - 14
-				let value = value | twoToThe[xMod16]; //set it to black
-			} else { //16th bit is a special case
-				let value = value | (twoToThe[xMod16] - 1);
-			}
-
-		} else {
-			let value = value + twoToThe[xMod16]; //set it to black
+		   let value = value | twoToThe[xMod16]; //set it to black
 		}
 	} 
+
 	do Memory.poke(16384 + address, value);
 
 	return;
@@ -87,31 +77,28 @@ class Screen {
 	let b = 0;
 	let x = x1;
 	let y = y1;
-	let dx = x2-x1;
-	let dy = y2-y1;
+	let dx = Math.abs(x2-x1);
+	let dy = Math.abs(y2-y1);
 	let diff = 0;
-	let ne = (dx > 0) & (dy > 0);
-	let nw = (dx < 0) & (dy > 0);
-	let se = (dx > 0) & (dy < 0);
-	let sw = (dx < 0) & (dy < 0);
-	let up = (dx = 0) & (dy > 0);	
-	let down = (dx = 0) & (dy < 0);
-	let left = (dx < 0) & (dy = 0);
-	let right = (dx > 0) & (dy = 0);
+	let ne = (x2 > x1) & (y1 > y2);
+	let nw = (x2 < x1) & (y1 > y2);
+	let se = (x2 > x1) & (y1 < y2);
+	let sw = (x2 < x1) & (y1 < y2);
+	let up = (x1 = x2) & (y1 > y2);	
+	let down = (x1 = x2) & (y1 < y2);
+	let left = (x1 > x2) & (y1 = y2);
+	let right = (x1 < x2) & (y1 = y2);
 
 	if(up) {
-		while ((b < dy) | (b = dy)) {
-			do Screen.drawPixel(x, y+b);
-			let b = b + 1;
-		}
-		return;
+	   do Screen.drawLine(x1, y2, x2, y1);
+	   return;
 	}
 	if(down) {
-		while ((b < dy) | (b = dy)) {
-			do Screen.drawPixel(x, y-b);
-			let b = b + 1;
-		}
-		return;
+	   while ((b < dy) | (b = dy)) {
+		do Screen.drawPixel(x, y+b);
+		let b = b + 1;
+	   }
+	   return;
 	}
 	if(right) {
 		while ( (a < dx) | (a = dx) ) {
@@ -121,25 +108,23 @@ class Screen {
 		return;
 	}
 	if(left) {
-		while (a < dx | (a = dx) ) {
-			do Screen.drawPixel(x-a, y);
-			let a = a + 1;
-		}
+	   do Screen.drawLine(x2, y1, x1, y2);
 		return;
 	}
 	while( ((a < dx) | (a = dx)) & ((b < dy) | (b = dy)) ) {
 		if (ne) {
-			do Screen.drawPixel(x+a, y+b);
+		   do Screen.drawPixel(x+a, y-b);
 		}
 		if (nw) {
-			do Screen.drawPixel(x-a, y+b);
+		   do Screen.drawPixel(x-a, y-b);
 		}
 		if (se) {
-			do Screen.drawPixel(x+a, y-b);
+		   do Screen.drawPixel(x+a, y+b);
 		}
 		if (sw) {
-			do Screen.drawPixel(x-a, y-b);
+			do Screen.drawPixel(x-a, y+b);
 		}
+
 		if(diff < 0) {
 			let a = a+1;
 			let diff = diff + dy;
@@ -148,22 +133,19 @@ class Screen {
 			let diff = diff - dx;			
 		}
 	}
+
 	return;
     }
 
     /** Draws a filled rectangle whose top left corner is (x1, y1)
      * and bottom right corner is (x2,y2), using the current color. */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
-	var int x, y, dx, dy, a, b;
-	let x = x1;
-	let y = y1;
-	let b = 0;
-	let dy = y2-y1;
 
-	while( ((b < dy) | (b = dy)) ) {
-		do Screen.drawLine(x1, y + b, x2, y + b);
-		let b = b + 1;
+	while( ((y1 < y2) | (y1 = y2)) ) {
+	   do Screen.drawLine(x1, y1, x2, y1);
+	   let y1 = y1 + 1;
 	}
+
 	return;
     }
 
@@ -180,13 +162,14 @@ class Screen {
 	let y2 = y + dy;
 	let x1 = x - Math.sqrt(Math.multiply(r,r) - Math.multiply(dy, dy));
 	let x2 = x + Math.sqrt(Math.multiply(r,r) - Math.multiply(dy, dy));
+
 	while(dy < r) {
-		do Screen.drawLine(x1, y1, x2, y2);
-		let dy = dy + 1;
-		let y1 = y + dy;
-		let y2 = y + dy;
-		let x1 = x - Math.sqrt(Math.multiply(r,r) - Math.multiply(dy, dy));
-		let x2 = x + Math.sqrt(Math.multiply(r,r) - Math.multiply(dy, dy));
+	   do Screen.drawLine(x1, y1, x2, y2);
+	   let dy = dy + 1;
+	   let y1 = y + dy;
+	   let y2 = y + dy;
+	   let x1 = x - Math.sqrt(Math.multiply(r,r) - Math.multiply(dy, dy));
+	   let x2 = x + Math.sqrt(Math.multiply(r,r) - Math.multiply(dy, dy));
 	}
 	
 	return;
