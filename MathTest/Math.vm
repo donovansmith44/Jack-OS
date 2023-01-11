@@ -244,29 +244,6 @@ push local 1
 push constant 2
 call Math.divide 2
 pop local 1
-push constant 7
-call String.new 1
-push constant 110
-call String.appendChar 2
-push constant 47
-call String.appendChar 2
-push constant 50
-call String.appendChar 2
-push constant 45
-call String.appendChar 2
-push constant 49
-call String.appendChar 2
-push constant 58
-call String.appendChar 2
-push constant 32
-call String.appendChar 2
-call Output.printString 1
-pop temp 0
-push local 1
-call Output.printInt 1
-pop temp 0
-call Output.println 0
-pop temp 0
 label WHILE_EXP1
 push local 1
 push constant 0
@@ -320,21 +297,6 @@ push local 2
 add
 pop local 0
 label IF_FALSE1
-push constant 3
-call String.new 1
-push constant 106
-call String.appendChar 2
-push constant 58
-call String.appendChar 2
-push constant 32
-call String.appendChar 2
-call Output.printString 1
-pop temp 0
-push local 1
-call Output.printInt 1
-pop temp 0
-call Output.println 0
-pop temp 0
 push local 1
 push constant 1
 sub

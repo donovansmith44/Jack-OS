@@ -10,10 +10,12 @@
  */ 
 class Memory {
 	static array ram, freeList, heap;
+	static int numAllocs;
+
     /** Initializes the class. */
     function void init() {
 	let ram = 0;
-
+	let numAllocs = 0;
 	let heap = 2048; //heapBase
 	let heap[0] = null;
 	let heap[1] = 14334; //heap size
@@ -39,6 +41,8 @@ class Memory {
 	var int tempSize;
 	var array block, lastBlock, nextBlock;
 	let block = 0;
+	let numAllocs = numAllocs + 1;
+
 	if(freeList[0] = null & ~(freeList[1] < (size + 2)))
 	{
 	   let block = freeList;
@@ -82,5 +86,5 @@ class Memory {
 
 	let o[0] = null;
 	return;
-    }    
+    }   
 }

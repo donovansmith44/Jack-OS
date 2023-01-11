@@ -39,16 +39,15 @@ class Memory {
      *  a reference to its base address. */
     function int alloc(int size) {
 	var int tempSize;
-	var array block, lastBlock, nextBlock;
+	var array block, nextBlock;
 	let block = 0;
-	let numAllocs = numAllocs + 1;
 
 	if(freeList[0] = null & ~(freeList[1] < (size + 2)))
 	{
 	   let block = freeList;
 	   let tempSize = freeList[1] - (size + 2);
 	   let block[0] = null;
-	   let block[1] = size;
+	   let block[1] = size + 2;
 	   let freeList = freeList + size + 2;
 	   let freeList[0] = null;
 	   let freeList[1] = tempSize;
@@ -75,16 +74,24 @@ class Memory {
      *  it available for future allocations. */
     function void deAlloc(Array o) {
 	var array endBlock;
-	let endBlock = freeList[0];
+//	let endBlock = freeList[0];
+	var int value;
+	let value = 0;
 
-	while(~(endBlock = null))
+	while(~(endBlock[0] = null))
 	{
-	   let endBlock = endBlock[0];
+	    let endBlock = endBlock[0];
 	}
+	let endBlock[0] = o;
+	let o[0] = null;	
+//	while(~(endBlock = null))
+//	{
+//	   let endBlock = endBlock[0];
+//	}
 
-	let endBlock = o;
+//	let endBlock = o;
 
-	let o[0] = null;
+//	let o[0] = null;
 	return;
     }   
 }
