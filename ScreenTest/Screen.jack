@@ -12,10 +12,12 @@
 class Screen {
 	static Array twoToThe;
 	static boolean color;
+	static int ScreenBaseAddress;
 
     /** Initializes the Screen. */
     function void init() {
 	var int i;
+	let ScreenBaseAddress = 16384;
 	let color = true;
 	let i = 1;
 
@@ -48,8 +50,9 @@ class Screen {
     /** Draws the (x,y) pixel, using the current color. */
     function void drawPixel(int x, int y) {
 	var int address, value, xMod16;
-	let address = Math.multiply(32,y) + Math.divide(x, 16);
-	let value = Memory.peek(16384 + address);
+
+	let address = ScreenBaseAddress + Math.multiply(32,y) + Math.divide(x, 16);
+	let value = Memory.peek(address);
 
 	let xMod16 = x - Math.multiply(Math.divide(x,16), 16);
 
@@ -64,7 +67,7 @@ class Screen {
 		}
 	} 
 
-	do Memory.poke(16384 + address, value);
+	do Memory.poke(address, value);
 
 	return;
     }
