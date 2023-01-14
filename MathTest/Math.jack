@@ -171,11 +171,9 @@ class Math {
     } //end min
 
     function boolean bit(int y, int j){
-	if (y&twoToThe[j] = 0){	
-	   return false;
+	if (y&twoToThe[j]){	
+	   return true;
     	}
-    	else{
-    	   return true;
-    	}
+    	   return false;
     } //end bit
 }

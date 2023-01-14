@@ -10,7 +10,7 @@
  * the screen is indexed (0,0).
  */
 class Screen {
-	static Array twoToThe;
+	static Array _twoToThe;
 	static boolean color;
 	static int ScreenBaseAddress;
 
@@ -21,16 +21,16 @@ class Screen {
 	let color = true;
 	let i = 1;
 
-	let twoToThe = Array.new(16);
-	let twoToThe[0] = 1;
+	let _twoToThe = Array.new(16);
+	let _twoToThe[0] = 1;
 
 	while((i < 15))
 	{
-	   let twoToThe[i] = twoToThe[i-1] + twoToThe[i-1];
+	   let _twoToThe[i] = _twoToThe[i-1] + _twoToThe[i-1];
 	   let i = i + 1;
 	}
 
-	let twoToThe[15] = -32767-1; //cannot straight away set it to -32768, because the PC only supports 15 bits.
+	let _twoToThe[15] = -32767-1; //cannot straight away set it to -32768, because the PC only supports 15 bits.
  
 	return;
     }
@@ -58,12 +58,12 @@ class Screen {
 
 	//set x%16 of value to current color.
 	if(~color) { //if color is set to white
-		if(twoToThe[xMod16] & value) { //if the x%16 pixel is currently black
-		   let value = value - twoToThe[xMod16]; //set it to white
+		if(_twoToThe[xMod16] & value) { //if the x%16 pixel is currently black
+		   let value = value - _twoToThe[xMod16]; //set it to white
 		}
 	} else { //if color is set to black
-		if(~(twoToThe[xMod16] & value)) { //if the x%16 pixel is currently white
-		   let value = value | twoToThe[xMod16]; //set it to black
+		if(~(_twoToThe[xMod16] & value)) { //if the x%16 pixel is currently white
+		   let value = value | _twoToThe[xMod16]; //set it to black
 		}
 	} 
 

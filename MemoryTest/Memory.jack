@@ -40,6 +40,8 @@ class Memory {
     function int alloc(int size) {
 	var int tempSize;
 	var array block, lastBlock, nextBlock;
+//	let block = freeList;
+//	let freeList = freeList + size;
 	let block = 0;
 	let numAllocs = numAllocs + 1;
 
@@ -74,17 +76,17 @@ class Memory {
     /** De-allocates the given object (cast as an array) by making
      *  it available for future allocations. */
     function void deAlloc(Array o) {
-	var array endBlock;
-	let endBlock = freeList[0];
+//	var array endBlock;
+//	let endBlock = freeList[0];
 
-	while(~(endBlock = null))
-	{
-	   let endBlock = endBlock[0];
-	}
+//	while(~(endBlock = null))
+//	{
+//	   let endBlock = endBlock[0];
+//	}
 
-	let endBlock = o;
+//	let endBlock = o;
 
-	let o[0] = null;
+	//let o[0] = null;
 	return;
     }   
 }

@@ -17,7 +17,7 @@
 class Output {
 
     // Character map for displaying characters
-    static Array charMaps, twoToThe;
+    static Array charMaps, twoToPower;
     static int cursorX, cursorY, cursorRow, cursorCol; 
 
     /** Initializes the screen, and locates the cursor at the screen's top-left. */
@@ -29,11 +29,11 @@ class Output {
 	do Output.moveCursor(cursorRow, cursorCol);
 
 	let i = 1;
-	let twoToThe = Array.new(11);
-	let twoToThe[0] = i;
+	let twoToPower = Array.new(11);
+	let twoToPower[0] = i;
 
 	while (i < 11) {
-	   let twoToThe[i] = twoToThe[i-1] + twoToThe[i-1];
+	   let twoToPower[i] = twoToPower[i-1] + twoToPower[i-1];
 	   let i = i + 1;
 	}
 
@@ -233,7 +233,7 @@ class Output {
 	while (i < 11) {	
 
 		while (bitNum < 11){
-	   		if (thisCharMap[i] & twoToThe[bitNum])
+	   		if (thisCharMap[i] & twoToPower[bitNum])
 			{
 			   do Screen.drawPixel(cursorCol + bitNum + 1, cursorRow + y + 1);
 			}
