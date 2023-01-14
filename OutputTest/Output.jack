@@ -88,7 +88,7 @@ class Output {
         do Output.create(64,30,51,51,59,59,59,27,3,30,0,0);  // @
         do Output.create(63,30,51,51,24,12,12,0,12,12,0,0);  // ?
 
-        do Output.create(65,0,0,0,0,0,0,0,0,0,0,0);          // A ** TO BE FILLED **
+        do Output.create(65,14,29,25,25,31,31,25,25,25,0,0);          // A ** TO BE FILLED **
         do Output.create(66,31,51,51,51,31,51,51,51,31,0,0); // B
         do Output.create(67,28,54,35,3,3,3,35,54,28,0,0);    // C
         do Output.create(68,15,27,51,51,51,51,51,27,15,0,0); // D
@@ -195,15 +195,20 @@ class Output {
     function void moveCursor(int i, int j) {
 	let cursorY = i;
 	let cursorX = j;
-	
+
+	if (cursorX < 0) { let cursorX = 63; let cursorY = cursorY - 1; }
+	if (cursorX > 63) { let cursorX = 0; let cursorY = cursorY + 1; }
+	if (cursorY > 22) { let cursorY = 0; let cursorX = 0; }
+
 	do Screen.setColor(false); //erase the old cursor image
 	do Screen.drawLine(cursorCol, cursorRow, cursorCol + 7, cursorRow); //top
 	do Screen.drawLine(cursorCol, cursorRow + 11, cursorCol + 7, cursorRow + 11); //bottom
 	do Screen.drawLine(cursorCol + 7, cursorRow, cursorCol + 7, cursorRow + 11); //right side
 	do Screen.drawLine(cursorCol, cursorRow, cursorCol, cursorRow + 11); //left side
 
-	let cursorRow = 11 * i;
-	let cursorCol = 8 * j;
+	let cursorRow = 11 * cursorY;
+	let cursorCol = 8 * cursorX;
+
 	do Screen.drawRectangle(cursorCol, cursorRow, cursorCol + 7, cursorRow + 11); //erase character at new cursor pos
 
 	do Screen.setColor(true); //draw the moved cursor image
@@ -211,7 +216,6 @@ class Output {
 	do Screen.drawLine(cursorCol, cursorRow + 11, cursorCol + 7, cursorRow + 11); //bottom
 	do Screen.drawLine(cursorCol + 7, cursorRow, cursorCol + 7, cursorRow + 11); //right side
 	do Screen.drawLine(cursorCol, cursorRow, cursorCol, cursorRow + 11); //left side
-
 	return;
     }
 
@@ -240,15 +244,7 @@ class Output {
 	   let i = i + 1;
 	   let y = y+1;
 	}
-
-	if(cursorCol > 63) {
-		if (cursorRow > 22) {	do Output.moveCursor(0, 0); }
-		else { do Output.moveCursor(0, cursorRow); }
-	   return;
-	}
-	if (cursorRow > 22) {	do Output.moveCursor(cursorCol, 0); return; }
-
-	do Output.moveCursor(cursorCol, cursorRow);
+	do Output.moveCursor(cursorY, cursorX+1);
 	return;
 
     }
@@ -256,22 +252,55 @@ class Output {
     /** displays the given string starting at the cursor location,
      *  and advances the cursor appropriately. */
     function void printString(String s) {
+	var int length, i;
+	let i = 0;
+	let length = s.length();
+
+	while(i < length) {
+	   do Output.printChar(s.charAt(i));
+	   let i = i + 1;
+	}
+
 	return;
     }
 
     /** Displays the given integer starting at the cursor location,
      *  and advances the cursor appropriately. */
     function void printInt(int i) {
+	var String s;
+	var int numDigits, num;
+	var boolean isNeg;
+	if(i < 0) { let isNeg = true; } 
+
+	let numDigits = 1;
+	let num = Math.abs(i);
+
+	while(~(num < 10)){
+	   let num = num / 10;
+	   let numDigits = numDigits + 1;
+	}
+
+	if(isNeg){
+	   let s = String.new(numDigits + 1);
+	} else{
+	   let s = String.new(numDigits);
+	}
+
+	do s.setInt(i);
+	do Output.printString(s);
+	
 	return;
     }
 
     /** Advances the cursor to the beginning of the next line. */
     function void println() {
+	do Output.moveCursor(cursorY + 1, 0);
 	return;
     }
 
     /** Moves the cursor one column back. */
     function void backSpace() {
+	do Output.moveCursor(cursorY, cursorX - 1);
 	return;
     }
 }
