@@ -256,7 +256,7 @@ class Output {
 	let i = 0;
 	let length = s.length();
 
-	while(i < length) {
+	while (i < length) {
 	   do Output.printChar(s.charAt(i));
 	   let i = i + 1;
 	}
@@ -270,17 +270,18 @@ class Output {
 	var String s;
 	var int numDigits, num;
 	var boolean isNeg;
+
 	if(i < 0) { let isNeg = true; } 
 
 	let numDigits = 1;
 	let num = Math.abs(i);
 
-	while(~(num < 10)){
+	while (~(num < 10)) {
 	   let num = num / 10;
 	   let numDigits = numDigits + 1;
 	}
 
-	if(isNeg){
+	if(isNeg) {
 	   let s = String.new(numDigits + 1);
 	} else{
 	   let s = String.new(numDigits);
