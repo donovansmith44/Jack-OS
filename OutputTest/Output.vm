@@ -3,13 +3,9 @@ push constant 0
 pop static 4
 push constant 0
 pop static 5
-push constant 0
-pop static 2
-push constant 0
-pop static 3
 push static 4
 push static 5
-call Output.drawCursor 2
+call Output.moveCursor 2
 pop temp 0
 push constant 1
 pop local 0
@@ -59,57 +55,6 @@ pop local 0
 goto WHILE_EXP0
 label WHILE_END0
 call Output.initMap 0
-pop temp 0
-push constant 0
-return
-function Output.drawCursor 0
-push argument 0
-push constant 9
-call Math.multiply 2
-pop static 4
-push argument 1
-push constant 11
-call Math.multiply 2
-pop static 5
-push static 5
-push static 4
-push static 5
-push constant 9
-add
-push static 4
-call Screen.drawLine 4
-pop temp 0
-push static 5
-push static 4
-push constant 11
-add
-push static 5
-push constant 9
-add
-push static 4
-push constant 11
-add
-call Screen.drawLine 4
-pop temp 0
-push static 5
-push constant 9
-add
-push static 4
-push static 5
-push constant 9
-add
-push static 4
-push constant 11
-add
-call Screen.drawLine 4
-pop temp 0
-push static 5
-push static 4
-push static 5
-push static 4
-push constant 11
-add
-call Screen.drawLine 4
 pop temp 0
 push constant 0
 return
@@ -1587,9 +1532,114 @@ push that 0
 return
 function Output.moveCursor 0
 push argument 0
-pop static 4
+pop static 3
 push argument 1
+pop static 2
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push static 5
+push static 4
+push static 5
+push constant 7
+add
+push static 4
+call Screen.drawLine 4
+pop temp 0
+push static 5
+push static 4
+push constant 11
+add
+push static 5
+push constant 7
+add
+push static 4
+push constant 11
+add
+call Screen.drawLine 4
+pop temp 0
+push static 5
+push constant 7
+add
+push static 4
+push static 5
+push constant 7
+add
+push static 4
+push constant 11
+add
+call Screen.drawLine 4
+pop temp 0
+push static 5
+push static 4
+push static 5
+push static 4
+push constant 11
+add
+call Screen.drawLine 4
+pop temp 0
+push constant 11
+push argument 0
+call Math.multiply 2
+pop static 4
+push constant 8
+push argument 1
+call Math.multiply 2
 pop static 5
+push static 5
+push static 4
+push static 5
+push constant 7
+add
+push static 4
+push constant 11
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push static 5
+push static 4
+push static 5
+push constant 7
+add
+push static 4
+call Screen.drawLine 4
+pop temp 0
+push static 5
+push static 4
+push constant 11
+add
+push static 5
+push constant 7
+add
+push static 4
+push constant 11
+add
+call Screen.drawLine 4
+pop temp 0
+push static 5
+push constant 7
+add
+push static 4
+push static 5
+push constant 7
+add
+push static 4
+push constant 11
+add
+call Screen.drawLine 4
+pop temp 0
+push static 5
+push static 4
+push static 5
+push static 4
+push constant 11
+add
+call Screen.drawLine 4
+pop temp 0
 push constant 0
 return
 function Output.printChar 4
@@ -1605,25 +1655,6 @@ add
 pop pointer 1
 push that 0
 pop local 0
-push constant 0
-call Screen.setColor 1
-pop temp 0
-push static 4
-push static 5
-call Output.drawCursor 2
-pop temp 0
-push constant 0
-not
-call Screen.setColor 1
-pop temp 0
-push static 4
-push constant 1
-add
-push static 5
-push constant 1
-add
-call Output.drawCursor 2
-pop temp 0
 label WHILE_EXP0
 push local 1
 push constant 11
@@ -1650,8 +1681,16 @@ and
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
+push static 5
 push local 3
+add
+push constant 1
+add
+push static 4
 push local 2
+add
+push constant 1
+add
 call Screen.drawPixel 2
 pop temp 0
 label IF_FALSE0
@@ -1673,6 +1712,49 @@ add
 pop local 2
 goto WHILE_EXP0
 label WHILE_END0
+push static 5
+push constant 63
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push static 4
+push constant 22
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+goto IF_END2
+label IF_FALSE2
+push constant 0
+push static 4
+call Output.moveCursor 2
+pop temp 0
+label IF_END2
+push constant 0
+return
+label IF_FALSE1
+push static 4
+push constant 22
+gt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push static 5
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+push constant 0
+return
+label IF_FALSE3
+push static 5
+push static 4
+call Output.moveCursor 2
+pop temp 0
 push constant 0
 return
 function Output.printString 0
