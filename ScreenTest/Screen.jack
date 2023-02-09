@@ -29,8 +29,12 @@ class Screen {
 	   let _twoToThe[i] = _twoToThe[i-1] + _twoToThe[i-1];
 	   let i = i + 1;
 	}
-
-	let _twoToThe[15] = -32767-1; //cannot straight away set it to -32768, because the PC only supports 15 bits.
+	
+	// _twoToThe[15] (max value) must be set as such because 32767 is the max
+	// value that can be represented with 16 bits in 2's complement, and therefore
+	// the maximum value that can be negated. -32768 is the maximum value that can
+	// be stored in memory, however, so we are able to get around this limitation.
+	let _twoToThe[15] = -32767-1;
  
 	return;
     }
@@ -108,7 +112,7 @@ class Screen {
 			do Screen.drawPixel(x+a, y);
 			let a = a + 1;
 		}
-		return;
+	   return;
 	}
 	if(left) {
 	   do Screen.drawLine(x2, y1, x1, y2);
